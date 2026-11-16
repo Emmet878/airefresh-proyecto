@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/comunes :: head('Detalle del pedido')}"></head>
+<body class="bg-light">
+    <main class="container py-5" style="max-width: 850px;">
+        <a th:href="@{/pedidos}">← Mis pedidos</a>
+        <h1 class="my-3" th:text="${'Pedido #' + pedido.id}"></h1>
+        
+        <div class="card card-body mb-3">
+            <p><strong>Estado:</strong> <span th:text="${pedido.estado}"></span></p>
+            <p><strong>Pago:</strong> <span th:text="${pedido.metodoPago}"></span></p>
+            <p><strong>Dirección:</strong> <span th:text="${pedido.direccion}"></span></p>
+            <p><strong>Teléfono:</strong> <span th:text="${pedido.telefono}"></span></p>
+            <p><strong>Fecha:</strong> <span th:text="${#temporals.format(pedido.creadoEn, 'dd/MM/yyyy HH:mm')}"></span></p>
+        </div>
+        
+        <table class="table bg-white">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio unitario</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="i : ${pedido.items}">
+                    <td th:text="${i.descripcion}"></td>
+                    <td th:text="${i.cantidad}"></td>
+                    <td th:text="${'$' + #numbers.formatDecimal(i.precioUnitario, 1, 'POINT', 2, 'COMMA')}"></td>
+                    <td th:text="${'$' + #numbers.formatDecimal(i.subtotal, 1, 'POINT', 2, 'COMMA')}"></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3 class="text-end" th:text="${'Total: $' + #numbers.formatDecimal(pedido.total, 1, 'POINT', 2, 'COMMA')}"></h3>
+    </main>
+</body>
+</html>

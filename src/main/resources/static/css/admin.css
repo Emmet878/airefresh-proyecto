@@ -1,0 +1,94 @@
+:root {
+    --azul-hielo: #eaf6fb;
+    --azul-claro: #bfe3f2;
+    --azul: #0e7fa8;
+    --azul-oscuro: #0b3c5d;
+    --texto: #1b2a35;
+}
+
+body {
+    background: var(--azul-hielo);
+    color: var(--texto);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Barra superior */
+.barra {
+    background: var(--azul-oscuro);
+    color: #fff;
+    border-radius: 12px;
+    padding: 18px 24px;
+    box-shadow: 0 6px 18px rgba(11, 60, 93, 0.25);
+}
+.barra h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0;
+}
+.barra small { color: var(--azul-claro); }
+
+/* Botones */
+.btn-primary {
+    background: var(--azul);
+    border-color: var(--azul);
+}
+.btn-primary:hover {
+    background: #0a688a;
+    border-color: #0a688a;
+}
+.btn-outline-light:hover { color: var(--azul-oscuro); }
+
+/* Buscador */
+.buscador {
+    background: #fff;
+    border-radius: 12px;
+    padding: 14px;
+    box-shadow: 0 2px 8px rgba(11, 60, 93, 0.08);
+}
+.buscador .form-control:focus {
+    border-color: var(--azul);
+    box-shadow: 0 0 0 0.2rem rgba(14, 127, 168, 0.2);
+}
+
+/* Tabla */
+.tarjeta-tabla {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(11, 60, 93, 0.08);
+}
+.tarjeta-tabla .table { margin-bottom: 0; }
+.tarjeta-tabla thead th {
+    background: var(--azul-oscuro);
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    padding: 14px 12px;
+}
+.tarjeta-tabla tbody td { padding: 12px; }
+.tarjeta-tabla tbody tr:hover { background: var(--azul-hielo); }
+.tarjeta-tabla .img-thumbnail {
+    border-radius: 8px;
+    object-fit: cover;
+    height: 55px;
+    width: 70px;
+}
+
+.marca { font-weight: 700; color: var(--azul-oscuro); }
+.btu {
+    background: var(--azul-claro);
+    color: var(--azul-oscuro);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.precio { font-weight: 600; white-space: nowrap; }
+
+/* Modal */
+.modal-content { border: none; border-radius: 12px; overflow: hidden; }
+
+@media (max-width: 768px) {
+    .tarjeta-tabla { overflow-x: auto; }
+}

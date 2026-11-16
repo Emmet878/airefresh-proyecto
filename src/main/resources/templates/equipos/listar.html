@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragmentos/comunes :: head('Panel de gestión')}"></head>
+<body class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Panel de Gestión - Airefresh</h2>
+        <div>
+            <a th:href="@{/}" class="btn btn-outline-secondary me-2">Ver Tienda</a>
+            <a th:href="@{/equipos/nuevo}" class="btn btn-primary me-2">+ Nuevo Equipo</a>
+            <form th:action="@{/logout}" method="post" class="d-inline"><button type="submit" class="btn btn-danger">Cerrar Sesión</button></form>
+        </div>
+    </div>
+
+    <form th:action="@{/equipos}" method="get" class="mb-4 d-flex gap-2">
+        <input type="text" name="marca" class="form-control" placeholder="Buscar por marca (ej. LG, Carrier)...">
+        <button type="submit" class="btn btn-secondary">Buscar</button>
+        <a th:href="@{/equipos}" class="btn btn-outline-secondary">Limpiar</a>
+    </form>
+
+   
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Foto</th>
+                <th>ID</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Capacidad (BTU)</th>
+                <th>Precio ($)</th>
+                <th>Existencias</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="equipo : ${equipos}">
+                <td>
+                    <img th:if="${equipo.foto != null}" 
+                         th:src="@{'/equipos/fotos/' + ${equipo.foto}}" 
+                         alt="Foto Equipo" width="70" class="img-thumbnail" />
+                    <span th:if="${equipo.foto == null}" class="text-muted">Sin foto</span>
+                </td>
+                <td th:text="${equipo.id}">1</td>
+                <td th:text="${equipo.marca}">LG</td>
+                <td th:text="${equipo.modelo}">Dual Inverter</td>
+                <td th:text="${equipo.btu}">12000</td>
+                <td th:text="${equipo.precio != null ? #numbers.formatDecimal(equipo.precio, 1, 2) : '0.00'}">450.00</td>
+                <td th:text="${equipo.existencias}">0</td>
+                <td>
+                    <a th:href="@{'/equipos/editar/' + ${equipo.id}}" class="btn btn-sm btn-warning">Editar</a>
+                    <form th:action="@{'/equipos/eliminar/' + ${equipo.id}}" method="post" style="display:inline" onsubmit="return confirm('¿Desactivar este producto?')">
+                        <button type="submit" class="btn btn-sm btn-danger">Desactivar</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(equipos)}">
+                <td colspan="8" class="text-center text-muted py-4">No hay equipos registrados en el sistema.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    
+
+</body>
+</html>

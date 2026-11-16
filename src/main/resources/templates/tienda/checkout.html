@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/comunes :: head('Confirmar pedido')}"></head>
+<body class="bg-light">
+    <main class="container py-5" style="max-width: 760px;">
+        <a th:href="@{/carrito}">← Volver al carrito</a>
+        <h1 class="my-3">Datos de entrega y pago</h1>
+        
+        <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+        
+        <form th:action="@{/checkout}" method="post" class="card card-body gap-3">
+            <div>
+                <label class="form-label">Dirección completa de entrega</label>
+                <input class="form-control" name="direccion" maxlength="180" th:value="${direccion}" required>
+            </div>
+            <div>
+                <label class="form-label">Teléfono de contacto</label>
+                <input class="form-control" name="telefono" type="tel" maxlength="40" th:value="${telefono}" required>
+            </div>
+            <div>
+                <label class="form-label">Método de pago</label>
+                <select class="form-select" name="metodoPago" required>
+                    <option value="CONTRAENTREGA">Pago contraentrega</option>
+                    <option value="TRANSFERENCIA">Transferencia bancaria</option>
+                </select>
+            </div>
+            <div class="alert alert-info">
+                <strong>Transferencia:</strong> <span th:text="${transferencia}"></span><br>
+                El pedido quedará pendiente de confirmación del negocio.
+            </div>
+            <div>
+                <label class="form-label">Notas (opcional)</label>
+                <textarea class="form-control" name="notas" maxlength="1000" rows="3" th:text="${notas}"></textarea>
+            </div>
+            <button class="btn btn-success btn-lg" type="submit">Confirmar pedido</button>
+        </form>
+    </main>
+</body>
+</html>

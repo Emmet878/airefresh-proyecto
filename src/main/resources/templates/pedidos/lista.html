@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/comunes :: head('Mis pedidos')}"></head>
+<body class="bg-light">
+    <main class="container py-5">
+        <a th:href="@{/}">Inicio</a>
+        <h1 class="my-3">Mis pedidos</h1>
+        
+        <div class="alert alert-info" th:if="${#lists.isEmpty(pedidos)}">
+            Todavía no tienes pedidos.
+        </div>
+        
+        <div class="table-responsive">
+            <table class="table bg-white" th:unless="${#lists.isEmpty(pedidos)}">
+                <thead>
+                    <tr>
+                        <th>N.º</th>
+                        <th>Fecha</th>
+                        <th>Total</th>
+                        <th>Pago</th>
+                        <th>Estado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="p : ${pedidos}">
+                        <td th:text="${p.id}"></td>
+                        <td th:text="${#temporals.format(p.creadoEn, 'dd/MM/yyyy HH:mm')}"></td>
+                        <td th:text="${'$' + #numbers.formatDecimal(p.total, 1, 'POINT', 2, 'COMMA')}"></td>
+                        <td th:text="${p.metodoPago}"></td>
+                        <td th:text="${p.estado}"></td>
+                        <td>
+                            <a th:href="@{'/pedidos/' + ${p.id}}">Ver detalle</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>

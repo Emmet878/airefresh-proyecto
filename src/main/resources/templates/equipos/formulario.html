@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragmentos/comunes :: head('Registro de equipo')}"></head>
+<body class="container mt-4" style="max-width: 600px;">
+
+    <h2 class="mb-4" th:text="${equipo.id == null} ? 'Registrar Nuevo Equipo' : 'Editar Equipo'">Formulario Equipo</h2>
+
+    <div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>
+    <form th:action="@{/equipos/guardar}" th:object="${equipo}" method="post" enctype="multipart/form-data">
+
+        <input type="hidden" th:field="*{id}" />
+        <!-- Conserva la foto actual si no se sube una nueva al editar -->
+        <input type="hidden" th:field="*{foto}" />
+
+        <div class="mb-3">
+            <label class="form-label">Marca:</label>
+            <input type="text" th:field="*{marca}" class="form-control" placeholder="Ej. LG, Midea, Carrier" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Modelo:</label>
+            <input type="text" th:field="*{modelo}" class="form-control" placeholder="Ej. Dual Inverter Cool" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Capacidad en BTU:</label>
+            <select th:field="*{btu}" class="form-select" required>
+                <option value="">Selecciona...</option>
+                <option value="9000">9.000 BTU</option>
+                <option value="12000">12.000 BTU</option>
+                <option value="18000">18.000 BTU</option>
+                <option value="24000">24.000 BTU</option>
+                <option value="36000">36.000 BTU</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Tipo de aire:</label>
+            <select th:field="*{tipo}" class="form-select">
+                <option value="">Sin especificar</option>
+                <option value="Mini Split Inverter">Mini Split Inverter</option>
+                <option value="Mini Split ON/OFF">Mini Split ON/OFF</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Existencias:</label>
+            <input type="number" min="0" th:field="*{existencias}" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Precio ($):</label>
+            <input type="number" step="any" min="0" th:field="*{precio}" class="form-control" placeholder="Ej. 1499000 (sin puntos)" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Precio anterior ($) <small class="text-muted">(opcional, para mostrar descuento)</small>:</label>
+            <input type="number" step="any" min="0" th:field="*{precioAnterior}" class="form-control" placeholder="Ej. 1699000" />
+        </div>
+
+        <div class="form-check mb-2">
+            <input type="checkbox" th:field="*{destacado}" class="form-check-input" id="destacado" />
+            <label class="form-check-label" for="destacado">Producto destacado (aparece en el inicio)</label>
+        </div>
+
+        <div class="form-check mb-4">
+            <input type="checkbox" th:field="*{activo}" class="form-check-input" id="activo" />
+            <label class="form-check-label" for="activo">Visible en la tienda</label>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label">Foto del Equipo:</label>
+            <input type="file" name="archivoFoto" accept="image/*" class="form-control" />
+            <small class="text-muted" th:if="${equipo.foto != null}">Foto actual guardada: [[${equipo.foto}]]</small>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-success">Guardar Equipo</button>
+            <a th:href="@{/equipos}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+
+</body>
+</html>

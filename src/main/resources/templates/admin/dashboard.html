@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragmentos/comunes :: head('Administración')}"></head>
+
+<body class="bg-light">
+
+    <main class="container py-5">
+
+        <div class="d-flex justify-content-between align-items-center">
+            <h1>Administración Airefresh</h1>
+
+            <div>
+                <a
+                    class="btn btn-outline-primary"
+                    th:href="@{/equipos}"
+                >
+                    Inventario
+                </a>
+
+                <a
+                    class="btn btn-outline-secondary"
+                    th:href="@{/}"
+                >
+                    Ver tienda
+                </a>
+
+                <form
+                    th:action="@{/logout}"
+                    method="post"
+                    class="d-inline"
+                >
+                    <button class="btn btn-danger">
+                        Salir
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="alert alert-success mt-3" th:if="${mensaje}" th:text="${mensaje}"></div>
+        <div class="alert alert-danger mt-3" th:if="${error}" th:text="${error}"></div>
+
+        <!-- Resumen general -->
+        <div class="row g-3 my-3">
+
+            <div class="col-md-4">
+                <div class="card card-body">
+                    <span>Productos registrados</span>
+                    <strong
+                        class="fs-2"
+                        th:text="${totalEquipos}"
+                    ></strong>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card card-body">
+                    <span>Usuarios registrados</span>
+                    <strong
+                        class="fs-2"
+                        th:text="${totalUsuarios}"
+                    ></strong>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card card-body">
+                    <span>Pedidos totales</span>
+                    <strong
+                        class="fs-2"
+                        th:text="${#lists.size(pedidos)}"
+                    ></strong>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Tabla de pedidos -->
+        <h2 class="mt-4">Pedidos recientes</h2>
+
+        <div class="table-responsive">
+            <table class="table table-striped bg-white">
+
+                <thead>
+                    <tr>
+                        <th>Pedido</th>
+                        <th>Cliente</th>
+                        <th>Fecha</th>
+                        <th>Total</th>
+                        <th>Pago</th>
+                        <th>Estado</th>
+                        <th>Detalle</th>
+                        <th>Actualizar estado</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr th:each="p : ${pedidos}">
+
+                        <td th:text="${p.id}"></td>
+
+                        <td
+                            th:text="${p.usuario.nombre + ' (' + p.usuario.correo + ')'}"
+                        ></td>
+
+                        <td
+                            th:text="${#temporals.format(p.creadoEn, 'dd/MM/yyyy HH:mm')}"
+                        ></td>
+
+                        <td
+                            th:text="${'$' + #numbers.formatDecimal(p.total, 1, 'POINT', 2, 'COMMA')}"
+                        ></td>
+
+                        <td th:text="${p.metodoPago}"></td>
+
+                        <td th:text="${p.estado}"></td>
+
+                        <td>
+                            <details>
+                                <summary>Ver detalle</summary>
+                                <div><strong>Dirección:</strong> <span th:text="${p.direccion}"></span></div>
+                                <div><strong>Teléfono:</strong> <span th:text="${p.telefono}"></span></div>
+                                <div th:if="${p.notas != null and !#strings.isEmpty(p.notas)}">
+                                    <strong>Notas:</strong> <span th:text="${p.notas}"></span>
+                                </div>
+                                <ul class="mb-0 ps-3">
+                                    <li th:each="i : ${p.items}" th:text="${i.cantidad + ' × ' + i.descripcion}"></li>
+                                </ul>
+                            </details>
+                        </td>
+
+                        <td>
+                            <form
+                                th:action="@{'/admin/pedidos/' + ${p.id} + '/estado'}"
+                                method="post"
+                                class="d-flex gap-2"
+                            >
+                                <select
+                                    class="form-select form-select-sm"
+                                    name="estado"
+                                >
+                                    <option
+                                        th:each="e : ${estados}"
+                                        th:value="${e}"
+                                        th:text="${e}"
+                                        th:selected="${e == p.estado}"
+                                    ></option>
+                                </select>
+
+                                <button class="btn btn-sm btn-primary">
+                                    Guardar
+                                </button>
+                            </form>
+                        </td>
+
+                    </tr>
+
+                    <tr th:if="${#lists.isEmpty(pedidos)}">
+                        <td colspan="8">
+                            Aún no hay pedidos.
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+        </div>
+
+    </main>
+
+</body>
+</html>

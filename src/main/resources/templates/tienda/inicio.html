@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Airefresh: venta e instalación de aires acondicionados en Cartagena">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="shortcut icon" th:href="@{/img/icono.png}" />
+
+
+    <!--Icono link-->
+
+
+    <title>Airefhes - Tu Aire Ideal</title>
+</head>
+<body>
+
+   <header class="site-header">
+      <nav>
+            <a class="brand" th:href="@{ /}" aria-label="Airefresh, inicio">
+              <img th:src="@{/img/logo.png}" alt="" class="brand-logo">
+              <span>AIRE<span>FRESH</span></span> 
+            </a>
+
+         <button class="nav-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-menu"><span></span><span></span><span></span></button>
+            <div class="nav-menu" id="nav-menu">
+                <a class="nav-link active" th:href="@{/}">Inicio</a>
+                <a class="nav-link" th:href="@{/productos}">Productos</a>
+                <a class="nav-link" href="#contacto">Contacto</a>
+                <a class="nav-link" sec:authorize="!isAuthenticated()" th:href="@{/login}">Iniciar sesión</a>
+                <a class="nav-link" sec:authorize="!isAuthenticated()" th:href="@{/registro}">Crear cuenta</a>
+                <a class="nav-link" th:href="@{/carrito}">Carrito</a>
+                <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/pedidos}">Mis pedidos</a>
+                <a class="nav-link admin-link" sec:authorize="hasRole('ADMIN')" th:href="@{/admin}">Panel admin</a>
+                <form class="logout-form" sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
+                    <button class="nav-logout" type="submit">Cerrar sesión</button>
+                </form>
+            </div>
+         
+      </nav>
+   </header>
+
+
+
+
+
+
+<main>
+        <section class="hero">
+            <div class="hero-shade"></div>
+            <div class="container hero-content">
+                <span class="eyebrow"><span class="eyebrow-dot"></span> CONFORT PARA EL CARIBE</span>
+                <h1>El clima perfecto<br><span>empieza en casa.</span></h1>
+                <p>Encuentra el aire acondicionado ideal para tu espacio, con opciones para cada necesidad y presupuesto.</p>
+                <div class="hero-actions">
+                    <a class="btn btn-primary" th:href="@{/productos}">Explorar productos <span aria-hidden="true">→</span></a>
+                    <a class="btn btn-ghost" href="#beneficios">Conoce Airefresh</a>
+                </div>
+                <div class="hero-note">
+                    <span class="note-icon">✦</span>
+                    <span>Soluciones de climatización para hogares y negocios en Cartagena.</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="benefits" id="beneficios">
+            <div class="container benefits-grid">
+                <article class="benefit">
+                   
+                    <div>
+                        <h3>Confort todo el año</h3>
+                        <p>Encuentra equipos para mantener tus espacios frescos.</p>
+                    </div>
+                </article>
+                <article class="benefit">
+                   
+                    <div>
+                        <h3>Para cada espacio</h3>
+                        <p>Alternativas para el hogar, oficina o negocio.</p>
+                    </div>
+                </article>
+                <article class="benefit">
+                    
+                    <div>
+                        <h3>Compra sencilla</h3>
+                        <p>Explora el catálogo y gestiona tus pedidos en línea.</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="products-section" id="producto">
+            <div class="container">
+                <div class="section-heading">
+                    <div>
+                        <span class="section-kicker">NUESTRO CATÁLOGO</span>
+                        <h2>Encuentra tu próximo <span>aire ideal.</span></h2>
+                        <p>Una selección de equipos disponibles en Airefresh.</p>
+                    </div>
+                    <a class="text-link" th:href="@{/productos}">Ver todo el catálogo <span aria-hidden="true">→</span></a>
+                </div>
+
+                <div class="product-grid">
+                    <article class="product-card" th:each="equipo : ${equipos}">
+                        <a class="product-image" th:href="@{/productos}" th:aria-label="|Ver catálogo de ${equipo.marca} ${equipo.modelo}|">
+                            <img loading="lazy" decoding="async" th:if="${equipo.foto != null and !#strings.isEmpty(equipo.foto)}" th:src="@{'/equipos/fotos/' + ${equipo.foto}}" th:alt="|Aire acondicionado ${equipo.marca} ${equipo.modelo}|">
+                            <img loading="lazy" decoding="async" th:unless="${equipo.foto != null and !#strings.isEmpty(equipo.foto)}" th:src="@{/img/logo.png}" alt="Airefresh">
+                        </a>
+
+                        <div class="product-info">
+                            <span class="product-tag" th:text="${equipo.tipo != null ? equipo.tipo : 'Climatización'}">Climatización</span>
+                            <h3 th:text="${equipo.marca + ' ' + equipo.modelo}">Aire acondicionado</h3>
+                            <p class="product-capacity" th:text="${equipo.btu + ' BTU'}">12000 BTU</p>
+                            <div class="product-bottom">
+                                <strong class="product-price" th:text="|$${#numbers.formatDecimal(equipo.precio, 1, 0, 'POINT')} COP|">$0 COP</strong>
+                                <span class="stock" th:if="${equipo.existencias > 0}">Disponible</span>
+                                <span class="stock out" th:unless="${equipo.existencias > 0}">Agotado</span>
+                            </div>
+
+                            <form class="product-add" th:if="${equipo.existencias > 0}" th:action="@{'/carrito/agregar/' + ${equipo.id}}" method="post">
+                                <input type="hidden" name="cantidad" value="1">
+                                <button class="btn btn-dark btn-small" type="submit">Añadir al carrito <span aria-hidden="true">+</span></button>
+                            </form>
+                        </div>
+                    </article>
+
+                    <div class="empty-products" th:if="${#lists.isEmpty(equipos)}">
+                       
+                        <h3>Pronto tendremos equipos destacados</h3>
+                        <p>Visita el catálogo para consultar los productos disponibles.</p>
+                        <a class="btn btn-primary" th:href="@{/productos}">Ver catálogo</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact-band" id="contacto">
+            <div class="container contact-inner">
+                <div>
+                    <span class="section-kicker">¿NECESITAS AYUDA?</span>
+                    <h2>Te ayudamos a encontrar<br>el clima que necesitas.</h2>
+                    <p>Comunícate con nuestro equipo para resolver tus dudas sobre climatización.</p>
+                </div>
+                <a class="btn btn-light" href="https://wa.me/573000000000?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20aires%20acondicionados" target="_blank" rel="noopener noreferrer">Contactar por WhatsApp <span aria-hidden="true">↗</span></a>
+            </div>
+        </section>
+    </main>
+   
+<footer class="site-footer">
+        <div class="container footer-main">
+            <div class="footer-brand">
+                <a class="brand brand-footer" th:href="@{/}">
+                    <img th:src="@{/img/logo.png}" alt="" class="brand-logo">
+                    <span>AIRE<span>FRESH</span></span>
+                </a>
+                <p>Climatización, confort y eficiencia para tu hogar u oficina en Cartagena.</p>
+            </div>
+
+            <div class="footer-column">
+                <h3>Explora</h3>
+                <a th:href="@{/}">Inicio</a>
+                <a th:href="@{/productos}">Productos</a>
+                <a th:href="@{/login}">Mi cuenta</a>
+            </div>
+
+            <div class="footer-column">
+                <h3>Contacto</h3>
+                <p>Cartagena, Colombia</p>
+                <a href="mailto:soporte@airefresh.com">soporte@airefresh.com</a>
+                <a href="https://wa.me/573000000000" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="container">
+                <span>© 2026 Airefresh. Todos los derechos reservados.</span>
+                <a href="#top" th:href="@{/}">Volver al inicio </a>
+            </div>
+        </div>
+    </footer>
+<script th:src="@{/js/nav.js}"></script>
+</body>
+</html>

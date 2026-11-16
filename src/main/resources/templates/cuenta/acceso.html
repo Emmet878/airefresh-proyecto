@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Iniciar sesión / Crear cuenta</title>
+  <link rel="stylesheet" th:href="@{/css/registro.css}">
+</head>
+<body>
+
+  <div class="caja">
+    <input type="radio" name="tab" id="tab-login" th:checked="${errorRegistro == null}">
+    <input type="radio" name="tab" id="tab-registro" th:checked="${errorRegistro != null}">
+
+    <div class="pestanas">
+      <label for="tab-login">Iniciar sesión</label>
+      <label for="tab-registro">Crear cuenta</label>
+    </div>
+
+    <!--S-->
+    <div th:if="${registroExitoso != null}" style="color:#198754;text-align:center;margin:12px 0" th:text="${registroExitoso}"></div>
+    <form id="form-login" th:action="@{/login}" method="post">
+      <div th:if="${error != null}" style="color: #dc3545; font-size: 0.9rem; margin-bottom: 12px; font-weight: 600; text-align: center;">
+        [[${error}]]
+      </div>
+
+      <div class="campo">
+        <label for="login-correo">Correo electrónico</label>
+        <input type="email" id="login-correo" name="correo" placeholder="Iniciar session" required>
+      </div>
+      <div class="campo">
+        <label for="login-clave">Contraseña</label>
+        <input type="password" id="login-clave" name="clave" placeholder="Tu contraseña" required>
+      </div>
+      <button type="submit">Entrar</button>
+    </form>
+
+    <!--C-->
+    <div th:if="${errorRegistro != null}" style="color:#dc3545;text-align:center;margin:12px 0" th:text="${errorRegistro}"></div>
+    <form id="form-registro" th:action="@{/registro}" method="post">
+      <div class="campo">
+        <label for="reg-nombre">Nombre completo</label>
+        <input type="text" id="reg-nombre" name="nombre" placeholder="Tu nombre" required>
+      </div>
+      <div class="campo">
+        <label for="reg-correo">Correo electrónico</label>
+        <input type="email" id="reg-correo" name="correo" placeholder="tucorreo@ejemplo.com" required>
+      </div>
+      <div class="campo">
+        <label for="reg-clave">Contraseña</label>
+        <input type="password" id="reg-clave" name="clave" minlength="8" placeholder="Mínimo 8 caracteres" required>
+      </div>
+      <div class="campo">
+        <label for="reg-clave2">Confirmar contraseña</label>
+        <input type="password" id="reg-clave2" name="clave2" minlength="8" placeholder="Repite la contraseña" required>
+      </div>
+      <button type="submit">Crear cuenta</button>
+    </form>
+  </div>
+
+</body>
+</html>

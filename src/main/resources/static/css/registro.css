@@ -1,0 +1,103 @@
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: #ced0d1;
+    color: #1c2733;
+}
+
+.caja {
+    width: 100%;
+    max-width: 380px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 8px 24px rgba(28, 39, 51, 0.12);
+}
+
+.caja > input[type="radio"] { 
+    display: none; 
+}
+
+.pestanas {
+    display: flex;
+    margin-bottom: 24px;
+    border-bottom: 2px solid #dde4ec;
+}
+
+.pestanas label {
+    flex: 1;
+    text-align: center;
+    padding: 10px 0;
+    cursor: pointer;
+    font-weight: 600;
+    color: #7a8794;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+}
+
+#tab-login:checked ~ .pestanas label[for="tab-login"],
+#tab-registro:checked ~ .pestanas label[for="tab-registro"] {
+    color: #435674;
+    border-bottom-color: #1685a7;
+}
+
+form { 
+    display: none; 
+}
+
+#tab-login:checked ~ #form-login,
+#tab-registro:checked ~ #form-registro { 
+    display: block; 
+}
+
+.campo { 
+    margin-bottom: 16px; 
+}
+
+.campo label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.campo input {
+    width: 100%;
+    padding: 11px 12px;
+    font-size: 1rem;
+    border: 1.5px solid #c5cfda;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.campo input:focus {
+    outline: none;
+    border-color: #1f6feb;
+    box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.2);
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    background: #1f6feb;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover { 
+    background: #1858bd; 
+}
